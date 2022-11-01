@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class FieldArrayData : MonoBehaviour
 {
@@ -10,6 +11,7 @@ public class FieldArrayData : MonoBehaviour
     const int MOVE_BLOCK = 2;
     const int PLAYER = 3;
     const int TARGET = 4;
+    private int SetsceneIndex;
     /// <summary>
     /// シーンに配置するオブジェクトのルートをヒエラルキーから設定する
     /// </summary>
@@ -163,6 +165,12 @@ public class FieldArrayData : MonoBehaviour
             }
             print("Field------------------------------------------");
             print("プレイヤーポジション:" + PlayerPosition);
+        }
+        //リセットボタン
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            SetsceneIndex = SceneManager.GetActiveScene().buildIndex;
+            SceneManager.LoadScene(SetsceneIndex);
         }
         // ゲーム状態によって処理を分ける
         switch (g_gameState)
