@@ -12,8 +12,16 @@ public class FieldArrayData : MonoBehaviour
     const int MOVE_BLOCK = 2;
     const int PLAYER = 3;
     const int TARGET = 4;
+    //現在のシーンが何番目にあるか
     private int SetsceneIndex;
+    //ゲームクリア時のテキストとリプレイボタン、次のステージに進むボタン
     [SerializeField] private Text text;
+    [SerializeField] private Button button;
+    [SerializeField] private Button Nextbutton;
+    //現在のスコアのテキスト
+    public GameObject score_object = null;
+    //スコア変数
+    public int score_num = 0;
     /// <summary>
     /// シーンに配置するオブジェクトのルートをヒエラルキーから設定する
     /// </summary>
@@ -152,6 +160,9 @@ public class FieldArrayData : MonoBehaviour
     }
     private void Update()
     {
+        //オブジェクトからTextコンポーネントを取得
+        Text score_text = score_object.GetComponent<Text>();
+
         if (Input.GetKeyDown(KeyCode.H))
         {
             // 配列を出力するテスト
@@ -241,6 +252,7 @@ public class FieldArrayData : MonoBehaviour
             case GameState.END:
                 break;
         }
+        score_text.text = "" + score_num;
     }
     public GameObject GetFieldObject(int tagId, int row, int col)
     {
@@ -328,6 +340,7 @@ public class FieldArrayData : MonoBehaviour
             // プレイヤーの位置を更新する
             // 座標情報なので最初の引数はX
             PlayerPosition = new Vector2(nextRow, nextCol);
+            score_num += 1;
         }
     }
     FieldArrayData g_fieldArrayData;
@@ -351,6 +364,8 @@ public class FieldArrayData : MonoBehaviour
         if(g_targetClearCount == g_targetMaxCount)
         {
             text.gameObject.SetActive(true);
+            button.gameObject.SetActive(true);
+            Nextbutton.gameObject.SetActive(true);
             print("ゲームクリア!");
             return true;
         }
