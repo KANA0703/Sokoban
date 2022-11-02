@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class FieldArrayData : MonoBehaviour
 {
@@ -12,6 +13,7 @@ public class FieldArrayData : MonoBehaviour
     const int PLAYER = 3;
     const int TARGET = 4;
     private int SetsceneIndex;
+    [SerializeField] private Text text;
     /// <summary>
     /// シーンに配置するオブジェクトのルートをヒエラルキーから設定する
     /// </summary>
@@ -348,6 +350,7 @@ public class FieldArrayData : MonoBehaviour
         // ターゲットクリア数とターゲットの最大数が一致したらゲームクリア
         if(g_targetClearCount == g_targetMaxCount)
         {
+            text.gameObject.SetActive(true);
             print("ゲームクリア!");
             return true;
         }
