@@ -22,7 +22,7 @@ public class ButtonScriptLast : MonoBehaviour
             SetsceneIndex = SceneManager.GetActiveScene().buildIndex;
             SceneManager.LoadScene(SetsceneIndex);
         }
-        //Enterキーを入力したら次のステージへ
+        //Enterキーを入力したら最初のステージへ
         if (Input.GetKeyDown(KeyCode.Return))
         {
             SetsceneIndex = SceneManager.GetActiveScene().buildIndex;
@@ -35,7 +35,7 @@ public class ButtonScriptLast : MonoBehaviour
         SetsceneIndex = SceneManager.GetActiveScene().buildIndex;
         SceneManager.LoadScene(SetsceneIndex);
     }
-    //ボタンが押されたら次のステージへ
+    //ボタンが押されたら最初のステージへ
     public void OnClickNext()
     {
         SetsceneIndex = SceneManager.GetActiveScene().buildIndex;
