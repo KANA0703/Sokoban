@@ -14,10 +14,9 @@ public class FieldArrayData : MonoBehaviour
     const int TARGET = 4;
     //現在のシーンが何番目にあるか
     private int SetsceneIndex;
-    //ゲームクリア時のテキストとリプレイボタン、次のステージに進むボタン
+    //ゲームクリア時のテキストと次のステージ移動のテキスト
     [SerializeField] private Text text;
-    [SerializeField] private Button button;
-    [SerializeField] private Button Nextbutton;
+    [SerializeField] private Text ClearText;
     //現在のスコアのテキスト
     public GameObject score_object = null;
     //スコア変数
@@ -361,11 +360,11 @@ public class FieldArrayData : MonoBehaviour
     public bool GetGameClearJudgment()
     {
         // ターゲットクリア数とターゲットの最大数が一致したらゲームクリア
+        // クリア時に“ゲームクリア”のテキスト表示と“NextStage : EnterKey”を表示
         if(g_targetClearCount == g_targetMaxCount)
         {
             text.gameObject.SetActive(true);
-            button.gameObject.SetActive(true);
-            Nextbutton.gameObject.SetActive(true);
+            ClearText.gameObject.SetActive(true);
             print("ゲームクリア!");
             return true;
         }

@@ -64,9 +64,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\ButtonScript.cs" />
+    <Compile Include="Assets\ClearScript.cs" />
     <Compile Include="Assets\FieldArrayData.cs" />
-    <Compile Include="Assets\ButtonScriptLast.cs" />
+    <Compile Include="Assets\ClearScriptLast.cs" />
     <Reference Include="Unity.Timeline.Editor">
       <HintPath>C:/Github/Sokoban/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
     </Reference>
