@@ -6,27 +6,20 @@ using UnityEngine.SceneManagement;
 public class ClearScript : MonoBehaviour
 {
     //現在のシーンが何番目にあるか
-    private int SetsceneIndex;
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
+    private int _setsceneIndex = default;
     void Update()
     {
         //Spaceキーを入力したらリセット
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            SetsceneIndex = SceneManager.GetActiveScene().buildIndex;
-            SceneManager.LoadScene(SetsceneIndex);
+            _setsceneIndex = SceneManager.GetActiveScene().buildIndex;
+            SceneManager.LoadScene(_setsceneIndex);
         }
         //Enterキーを入力したら次のステージへ
         if (Input.GetKeyDown(KeyCode.Return))
         {
-            SetsceneIndex = SceneManager.GetActiveScene().buildIndex;
-            SceneManager.LoadScene(SetsceneIndex + 1);
+            _setsceneIndex = SceneManager.GetActiveScene().buildIndex;
+            SceneManager.LoadScene(_setsceneIndex + 1);
         }
     }
 }

@@ -4297,16 +4297,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b131e0ce40cecc4fbb08303d8e918e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  text: {fileID: 545424613}
-  ClearText: {fileID: 435448005}
+  _text: {fileID: 435448005}
+  _clearText: {fileID: 545424613}
   score_object: {fileID: 1029111647}
   score_num: 0
-  g_fieldRootObject: {fileID: 1523976160}
-  g_staticBlock: {fileID: 9026419707899678764, guid: 914f4a3abed09814c9bb43d7cfdb69b0, type: 3}
-  g_moveBlock: {fileID: 3332201135311778026, guid: 45850414214ed71429a8557b70964cc3, type: 3}
-  g_player: {fileID: 2590027180609127194, guid: d7f8274c804491346a2761856b395a87, type: 3}
-  g_target: {fileID: 2130318567}
-  g_gameState: 0
+  _fieldRootObject: {fileID: 1523976160}
+  _staticBlock: {fileID: 859089900}
+  _moveBlock: {fileID: 551891088}
+  _player: {fileID: 1109858264}
+  _target: {fileID: 2130318567}
+  _gameState: 0
 --- !u!4 &347930686
 Transform:
   m_ObjectHideFlags: 0
@@ -7329,6 +7329,11 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &551891088 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3332201135311778026, guid: 45850414214ed71429a8557b70964cc3, type: 3}
+  m_PrefabInstance: {fileID: 362531107}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &557267376
 GameObject:
   m_ObjectHideFlags: 0
@@ -10883,6 +10888,11 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &859089900 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9026419707899678764, guid: 914f4a3abed09814c9bb43d7cfdb69b0, type: 3}
+  m_PrefabInstance: {fileID: 2036740986}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &870527841
 GameObject:
   m_ObjectHideFlags: 0
@@ -12812,6 +12822,11 @@ Transform:
 Transform:
   m_CorrespondingSourceObject: {fileID: 5574338783771809187, guid: 914f4a3abed09814c9bb43d7cfdb69b0, type: 3}
   m_PrefabInstance: {fileID: 971441691}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1109858264 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2590027180609127194, guid: d7f8274c804491346a2761856b395a87, type: 3}
+  m_PrefabInstance: {fileID: 2024629386}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1112329983
 GameObject:

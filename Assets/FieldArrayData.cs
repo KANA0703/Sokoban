@@ -15,8 +15,10 @@ public class FieldArrayData : MonoBehaviour
     //現在のシーンが何番目にあるか
     private int SetsceneIndex;
     //ゲームクリア時のテキストと次のステージ移動のテキスト
-    [SerializeField] private Text text;
-    [SerializeField] private Text ClearText;
+    [Header("ゲームクリア時のテキストを設定")]
+    [SerializeField] private Text _clearText;
+    [Header("次のステージ移動のテキストを設定")]
+    [SerializeField] private Text _text;
     //現在のスコアのテキスト
     public GameObject score_object = null;
     //スコア変数
@@ -25,7 +27,7 @@ public class FieldArrayData : MonoBehaviour
     /// シーンに配置するオブジェクトのルートをヒエラルキーから設定する
     /// </summary>
     [Header("配置するオブジェクトの親オブジェクトを設定")]
-    [SerializeField] GameObject g_fieldRootObject;
+    [SerializeField] GameObject _fieldRootObject = default;
     /// <summary>
     /// フィールドのオブジェクトリスト
     /// 0 空欄
@@ -33,59 +35,60 @@ public class FieldArrayData : MonoBehaviour
     /// 2 動くブロック
     /// 3 プレイヤー
     /// </summary>
-    string[] g_fieldObjectTagList = {
-"","StaticBlock","MoveBlock","Player","TargetPosition"
-};
+    string[] _fieldObjectTagList = {
+        "","StaticBlock","MoveBlock","Player","TargetPosition"
+    };
     [Header("動かないオブジェクトを設定(Tagを識別する)")]
-    [SerializeField] GameObject g_staticBlock;
+    [SerializeField] GameObject _staticBlock = default;
     [Header("動くオブジェクトを設定(Tagを識別する)")]
-    [SerializeField] GameObject g_moveBlock;
+    [SerializeField] GameObject _moveBlock = default;
     [Header("プレイヤーオブジェクトを設定(Tagを識別する)")]
-    [SerializeField] GameObject g_player;
+    [SerializeField] GameObject _player = default;
     [Header("ターゲットオブジェクトを設定(tagを識別する)")]
-    [SerializeField] GameObject g_target;
+    [SerializeField] GameObject _target = default;
     /// <summary>
     /// フィールドデータ用の変数を定義
     /// </summary>
-    int[,] g_fieldData = {
-{ 0, 0, 0, 0, 0, 0},
-{ 0, 0, 0, 0, 0, 0},
-{ 0, 0, 0, 0, 0, 0},
-{ 0, 0, 0, 0, 0, 0},
-{ 0, 0, 0, 0, 0, 0},
-{ 0, 0, 0, 0, 0, 0},
-};
+    int[,] _fieldData = {
+        { 0, 0, 0, 0, 0, 0},
+        { 0, 0, 0, 0, 0, 0},
+        { 0, 0, 0, 0, 0, 0},
+        { 0, 0, 0, 0, 0, 0},
+        { 0, 0, 0, 0, 0, 0},
+        { 0, 0, 0, 0, 0, 0},
+    };
     // 縦横の最大数
-    int g_horizontalMaxCount = 0;
-    int g_verticalMaxCount = 0;
+    int _horizontalMaxCount = 0;
+    int _verticalMaxCount = 0;
 
     /// <summary>
     /// プレイヤーの位置情報
     /// </summary>
     public Vector2 PlayerPosition { get; set; }
-    int[,] g_targetData = {
- { 0, 0, 0, 0, 0, 0 },
- { 0, 0, 0, 0, 0, 0 },
- { 0, 0, 0, 0, 0, 0 },
- { 0, 0, 0, 0, 0, 0 },
- { 0, 0, 0, 0, 0, 0 },
- { 0, 0, 0, 0, 0, 0 },
- };
+    int[,] _targetData = {
+        { 0, 0, 0, 0, 0, 0 },
+        { 0, 0, 0, 0, 0, 0 },
+        { 0, 0, 0, 0, 0, 0 },
+        { 0, 0, 0, 0, 0, 0 },
+        { 0, 0, 0, 0, 0, 0 },
+        { 0, 0, 0, 0, 0, 0 },
+     };
     // ブロックがターゲットに入った数
-    int g_targetClearCount = 0;
+    int _targetClearCount = 0;
     // ターゲットの最大数
-    int g_targetMaxCount = 0;
+    int _targetMaxCount = 0;
     /// <summary>
     /// fieldRootObjectの配下にあるオブジェクトのタグを読み取り
     /// XとY座標を基にfieldDataへ格納します(fieldDataは上書き削除します)
     /// fieldDataはfieldData[Y,X]で紐づいている
     /// フィールド初期化に使う
     /// </summary>
-    /// <param name="fieldRootObject">フィールドオブジェクトのルートオブジェクトを設定</param>
+    /// <param name="fieldRootObject">フィールドオブジェクトのルートオブジェクトを設定</param>]
+    bool _inputState = false;
     public void ImageToArray()
     {
         // フィールドの縦と横の最大数を取得(フィールドの大きさを取得)
-        foreach (Transform fieldObject in g_fieldRootObject.transform)
+        foreach (Transform fieldObject in _fieldRootObject.transform)
         {
             /*
             * 縦方向に関しては座標の兼ね合い上
@@ -94,27 +97,27 @@ public class FieldArrayData : MonoBehaviour
             */
             int col = Mathf.FloorToInt(fieldObject.position.x);
             int row = Mathf.FloorToInt(-fieldObject.position.y);
-            if (g_fieldObjectTagList[STATIC_BLOCK].Equals(fieldObject.tag))
+            if (_fieldObjectTagList[STATIC_BLOCK].Equals(fieldObject.tag))
             {
-                g_fieldData[row, col] = STATIC_BLOCK;
+                _fieldData[row, col] = STATIC_BLOCK;
             }
-            else if (g_fieldObjectTagList[MOVE_BLOCK].Equals(fieldObject.tag))
+            else if (_fieldObjectTagList[MOVE_BLOCK].Equals(fieldObject.tag))
             {
-                g_fieldData[row, col] = MOVE_BLOCK;
+                _fieldData[row, col] = MOVE_BLOCK;
             }
-            else if (g_fieldObjectTagList[PLAYER].Equals(fieldObject.tag))
+            else if (_fieldObjectTagList[PLAYER].Equals(fieldObject.tag))
             {
-                g_fieldData[row, col] = PLAYER;
+                _fieldData[row, col] = PLAYER;
                 PlayerPosition = new Vector2(row, col);
             }
-            else if (g_fieldObjectTagList[TARGET].Equals(fieldObject.tag))
+            else if (_fieldObjectTagList[TARGET].Equals(fieldObject.tag))
             {
-                g_fieldData[row, col] = TARGET;
+                _fieldData[row, col] = TARGET;
                 // ターゲットの最大カウント
-                g_targetMaxCount++;
+                _targetMaxCount++;
             }
             // フィールドデータをターゲット用のデータにコピーする
-            g_targetData = (int[,])g_fieldData.Clone();
+            _targetData = (int[,])_fieldData.Clone();
         }
     }
     /// <summary>
@@ -124,7 +127,7 @@ public class FieldArrayData : MonoBehaviour
     public void SetFieldMaxSize()
     {
         // フィールドの縦と横の最大数を取得(フィールドの大きさを取得)
-        foreach (Transform fieldObject in g_fieldRootObject.transform)
+        foreach (Transform fieldObject in _fieldRootObject.transform)
         {
             /*
             * 縦方向に関しては座標の兼ね合い上
@@ -134,18 +137,18 @@ public class FieldArrayData : MonoBehaviour
             int positionX = Mathf.FloorToInt(fieldObject.position.x);
             int positionY = Mathf.FloorToInt(-fieldObject.position.y);
             // 横の最大数を設定する
-            if (g_horizontalMaxCount < positionX)
+            if (_horizontalMaxCount < positionX)
             {
-                g_horizontalMaxCount = positionX;
+                _horizontalMaxCount = positionX;
             }
             // 縦の最大数を設定する
-            if (g_verticalMaxCount < positionY)
+            if (_verticalMaxCount < positionY)
             {
-                g_verticalMaxCount = positionY;
+                _verticalMaxCount = positionY;
             }
         }
         // フィールド配列の初期化
-        g_fieldData = new int[g_verticalMaxCount + 1, g_horizontalMaxCount + 1];
+        _fieldData = new int[_verticalMaxCount + 1, _horizontalMaxCount + 1];
     }
     /// <summary>
     /// 初回起動時
@@ -155,7 +158,7 @@ public class FieldArrayData : MonoBehaviour
     {
         SetFieldMaxSize();
         ImageToArray();
-        g_fieldArrayData = GetComponent<FieldArrayData>();
+        _fieldArrayData = GetComponent<FieldArrayData>();
     }
     private void Update()
     {
@@ -166,12 +169,12 @@ public class FieldArrayData : MonoBehaviour
         {
             // 配列を出力するテスト
             print("Field------------------------------------------");
-            for (int y = 0; y <= g_verticalMaxCount; y++)
+            for (int y = 0; y <= _verticalMaxCount; y++)
             {
                 string outPutString = "";
-                for (int x = 0; x <= g_horizontalMaxCount; x++)
+                for (int x = 0; x <= _horizontalMaxCount; x++)
                 {
-                    outPutString += g_fieldData[y, x];
+                    outPutString += _fieldData[y, x];
                 }
                 print(outPutString);
             }
@@ -185,7 +188,7 @@ public class FieldArrayData : MonoBehaviour
             SceneManager.LoadScene(SetsceneIndex);
         }
         // ゲーム状態によって処理を分ける
-        switch (g_gameState)
+        switch (_gameState)
         {
             case GameState.START:
                 SetGameState(GameState.PLAYER);
@@ -196,54 +199,54 @@ public class FieldArrayData : MonoBehaviour
                 float horizontalInput = Input.GetAxisRaw("Horizontal");
                 float verticalInput = Input.GetAxisRaw("Vertical");
                 // 横入力が0より大きい場合は右に移動
-                if (horizontalInput > 0 && !g_inputState)
+                if (horizontalInput > 0 && !_inputState)
                 {
-                    g_fieldArrayData.PlayerMove(
-                    Mathf.FloorToInt(g_fieldArrayData.PlayerPosition.x),
-                    Mathf.FloorToInt(g_fieldArrayData.PlayerPosition.y),
-                    Mathf.FloorToInt(g_fieldArrayData.PlayerPosition.x),
-                    Mathf.FloorToInt(g_fieldArrayData.PlayerPosition.y + 1));
-                    g_inputState = true;
+                    _fieldArrayData.PlayerMove(
+                    Mathf.FloorToInt(_fieldArrayData.PlayerPosition.x),
+                    Mathf.FloorToInt(_fieldArrayData.PlayerPosition.y),
+                    Mathf.FloorToInt(_fieldArrayData.PlayerPosition.x),
+                    Mathf.FloorToInt(_fieldArrayData.PlayerPosition.y + 1));
+                    _inputState = true;
                 }
                 // 横入力が0より小さい場合は左に移動
-                else if (horizontalInput < 0 && !g_inputState)
+                else if (horizontalInput < 0 && !_inputState)
                 {
-                    g_fieldArrayData.PlayerMove(
-                    Mathf.FloorToInt(g_fieldArrayData.PlayerPosition.x),
-                    Mathf.FloorToInt(g_fieldArrayData.PlayerPosition.y),
-                    Mathf.FloorToInt(g_fieldArrayData.PlayerPosition.x),
-                    Mathf.FloorToInt(g_fieldArrayData.PlayerPosition.y - 1));
-                    g_inputState = true;
+                    _fieldArrayData.PlayerMove(
+                    Mathf.FloorToInt(_fieldArrayData.PlayerPosition.x),
+                    Mathf.FloorToInt(_fieldArrayData.PlayerPosition.y),
+                    Mathf.FloorToInt(_fieldArrayData.PlayerPosition.x),
+                    Mathf.FloorToInt(_fieldArrayData.PlayerPosition.y - 1));
+                    _inputState = true;
                 }
                 // 縦入力が0より大きい場合は上に移動
-                if (verticalInput > 0 && !g_inputState)
+                if (verticalInput > 0 && !_inputState)
                 {
-                    g_fieldArrayData.PlayerMove(
-                    Mathf.FloorToInt(g_fieldArrayData.PlayerPosition.x),
-                    Mathf.FloorToInt(g_fieldArrayData.PlayerPosition.y),
-                    Mathf.FloorToInt(g_fieldArrayData.PlayerPosition.x - 1),
-                    Mathf.FloorToInt(g_fieldArrayData.PlayerPosition.y));
-                    g_inputState = true;
+                    _fieldArrayData.PlayerMove(
+                    Mathf.FloorToInt(_fieldArrayData.PlayerPosition.x),
+                    Mathf.FloorToInt(_fieldArrayData.PlayerPosition.y),
+                    Mathf.FloorToInt(_fieldArrayData.PlayerPosition.x - 1),
+                    Mathf.FloorToInt(_fieldArrayData.PlayerPosition.y));
+                    _inputState = true;
                 }
                 // 縦入力が0より小さい場合は下に移動
-                else if (verticalInput < 0 && !g_inputState)
+                else if (verticalInput < 0 && !_inputState)
                 {
-                    g_fieldArrayData.PlayerMove(
-                    Mathf.FloorToInt(g_fieldArrayData.PlayerPosition.x),
-                    Mathf.FloorToInt(g_fieldArrayData.PlayerPosition.y),
-                    Mathf.FloorToInt(g_fieldArrayData.PlayerPosition.x + 1),
-                    Mathf.FloorToInt(g_fieldArrayData.PlayerPosition.y));
-                    g_inputState = true;
+                    _fieldArrayData.PlayerMove(
+                    Mathf.FloorToInt(_fieldArrayData.PlayerPosition.x),
+                    Mathf.FloorToInt(_fieldArrayData.PlayerPosition.y),
+                    Mathf.FloorToInt(_fieldArrayData.PlayerPosition.x + 1),
+                    Mathf.FloorToInt(_fieldArrayData.PlayerPosition.y));
+                    _inputState = true;
                 }
                 // 入力状態が解除されるまで再入力できないようにする
                 if ((horizontalInput + verticalInput) == 0)
                 {
-                    g_inputState = false;
+                    _inputState = false;
                 }
                 //クリア判定
-                if (g_fieldArrayData.GetGameClearJudgment())
+                if (_fieldArrayData.GetGameClearJudgment())
                 {
-                    g_gameState = GameState.END;
+                    _gameState = GameState.END;
                 }
                 break;
             case GameState.BLOCK_MOVE:
@@ -255,10 +258,10 @@ public class FieldArrayData : MonoBehaviour
     }
     public GameObject GetFieldObject(int tagId, int row, int col)
     {
-        foreach(Transform fieldObject in g_fieldRootObject.transform)
+        foreach(Transform fieldObject in _fieldRootObject.transform)
         {
             if(tagId != -1 && fieldObject.tag 
-                != g_fieldObjectTagList[tagId])
+                != _fieldObjectTagList[tagId])
             {
                 continue;
             }
@@ -272,30 +275,30 @@ public class FieldArrayData : MonoBehaviour
     }
     public void MoveData(int preRow, int preCol, int nextRow, int nextCol)
     {
-        GameObject moveObject = GetFieldObject(g_fieldData[preRow, preCol], preRow, preCol);
+        GameObject moveObject = GetFieldObject(_fieldData[preRow, preCol], preRow, preCol);
         if (moveObject != null)
         {
             moveObject.transform.position = new Vector2(nextCol, -nextRow);
         }
-        g_fieldData[nextRow, nextCol] = g_fieldData[preRow, preCol];
-        g_fieldData[preRow, preCol] = NO_BLOCK;
+        _fieldData[nextRow, nextCol] = _fieldData[preRow, preCol];
+        _fieldData[preRow, preCol] = NO_BLOCK;
     }
     public bool BlockMoveCheck(int y, int x)
     {
         // ターゲットブロックだったら
-        if(g_targetData[y,x] == TARGET)
+        if(_targetData[y,x] == TARGET)
         {
             // ターゲットクリアカウントを上げる
-            g_targetClearCount++;
+            _targetClearCount++;
             return true;
         }
-        return g_fieldData[y, x] == NO_BLOCK;
+        return _fieldData[y, x] == NO_BLOCK;
     }
     public bool BlockMove(int preRow, int preCol, int nextRow, int nextCol)
     {
         // 境界線外エラー
         if (nextRow < 0 || nextCol < 0 ||
-        nextRow > g_verticalMaxCount || nextCol > g_horizontalMaxCount)
+        nextRow > _verticalMaxCount || nextCol > _horizontalMaxCount)
         {
             return false;
         }
@@ -313,7 +316,7 @@ public class FieldArrayData : MonoBehaviour
         /* プレイヤーの移動先が動くブロックの時
         * ブロックを移動する処理を実施する
         */
-        if (g_fieldData[nextRow, nextCol] == MOVE_BLOCK)
+        if (_fieldData[nextRow, nextCol] == MOVE_BLOCK)
         {
             bool blockMoveFlag = BlockMove(nextRow, nextCol,
             nextRow + (nextRow - preRow),
@@ -322,8 +325,8 @@ public class FieldArrayData : MonoBehaviour
         }
         // プレイヤーの移動先が空の時移動する
         // プレイヤーの移動先がターゲットの時移動する
-        if (g_fieldData[nextRow, nextCol] == NO_BLOCK || 
-            g_fieldData[nextRow, nextCol] == TARGET)
+        if (_fieldData[nextRow, nextCol] == NO_BLOCK || 
+            _fieldData[nextRow, nextCol] == TARGET)
         {
             return true;
         }
@@ -342,29 +345,28 @@ public class FieldArrayData : MonoBehaviour
             score_num += 1;
         }
     }
-    FieldArrayData g_fieldArrayData;
+    FieldArrayData _fieldArrayData;
     enum GameState
     {
         START, STOP, BLOCK_MOVE, PLAYER, END,
     }
-    [SerializeField] GameState g_gameState = GameState.START;
+    [SerializeField] GameState _gameState = GameState.START;
     void SetGameState(GameState gameState)
     {
-        this.g_gameState = gameState;
+        this._gameState = gameState;
     }
     GameState GetGameState()
     {
-        return this.g_gameState;
+        return this._gameState;
     }
-    bool g_inputState = false;
     public bool GetGameClearJudgment()
     {
         // ターゲットクリア数とターゲットの最大数が一致したらゲームクリア
         // クリア時に“ゲームクリア”のテキスト表示と“NextStage : EnterKey”を表示
-        if(g_targetClearCount == g_targetMaxCount)
+        if(_targetClearCount == _targetMaxCount)
         {
-            text.gameObject.SetActive(true);
-            ClearText.gameObject.SetActive(true);
+            _text.gameObject.SetActive(true);
+            _clearText.gameObject.SetActive(true);
             print("ゲームクリア!");
             return true;
         }
